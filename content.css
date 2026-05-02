@@ -1,0 +1,261 @@
+/* Naukri AutoFill Assistant - Overlay Styles */
+/* Injected into naukri.com pages */
+
+#naukri-autofill-overlay {
+  position: fixed;
+  z-index: 2147483647;
+  width: 360px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.10);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  color: #1a1a2e;
+  border: 1.5px solid #e8eaf6;
+  overflow: hidden;
+  animation: naf-slide-in 0.25s ease-out;
+}
+
+@keyframes naf-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Header */
+#naukri-autofill-overlay .naf-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 12px;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  color: white;
+}
+
+#naukri-autofill-overlay .naf-logo {
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+}
+
+#naukri-autofill-overlay .naf-close {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  padding: 0;
+  line-height: 1;
+}
+
+#naukri-autofill-overlay .naf-close:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* Body */
+#naukri-autofill-overlay .naf-body {
+  padding: 16px;
+}
+
+/* Badge */
+#naukri-autofill-overlay .naf-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  border: 1px solid #fde68a;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+/* Question text */
+#naukri-autofill-overlay .naf-question-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e1b4b;
+  margin-bottom: 14px;
+  line-height: 1.5;
+  padding: 10px 12px;
+  background: #f5f3ff;
+  border-radius: 8px;
+  border-left: 3px solid #7c3aed;
+}
+
+/* Answer section */
+#naukri-autofill-overlay .naf-answer-section {
+  margin-bottom: 14px;
+}
+
+#naukri-autofill-overlay .naf-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Options (radio/checkbox) */
+#naukri-autofill-overlay .naf-options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+#naukri-autofill-overlay .naf-options::-webkit-scrollbar {
+  width: 4px;
+}
+
+#naukri-autofill-overlay .naf-options::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+#naukri-autofill-overlay .naf-options::-webkit-scrollbar-thumb {
+  background: #c4b5fd;
+  border-radius: 4px;
+}
+
+#naukri-autofill-overlay .naf-option-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1.5px solid #e5e7eb;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 13px;
+  color: #374151;
+  background: #fafafa;
+}
+
+#naukri-autofill-overlay .naf-option-label:hover {
+  border-color: #7c3aed;
+  background: #f5f3ff;
+  color: #4f46e5;
+}
+
+#naukri-autofill-overlay .naf-option-label input[type="radio"],
+#naukri-autofill-overlay .naf-option-label input[type="checkbox"] {
+  accent-color: #7c3aed;
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+#naukri-autofill-overlay .naf-option-label:has(input:checked) {
+  border-color: #7c3aed;
+  background: #ede9fe;
+  color: #4f46e5;
+  font-weight: 600;
+}
+
+/* Text inputs */
+#naukri-autofill-overlay .naf-input,
+#naukri-autofill-overlay .naf-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #1f2937;
+  background: #fafafa;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+#naukri-autofill-overlay .naf-input:focus,
+#naukri-autofill-overlay .naf-textarea:focus {
+  outline: none;
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+  background: #fff;
+}
+
+/* Action buttons */
+#naukri-autofill-overlay .naf-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+#naukri-autofill-overlay .naf-btn {
+  flex: 1;
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+#naukri-autofill-overlay .naf-btn-primary {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: white;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+}
+
+#naukri-autofill-overlay .naf-btn-primary:hover {
+  background: linear-gradient(135deg, #4338ca, #6d28d9);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+  transform: translateY(-1px);
+}
+
+#naukri-autofill-overlay .naf-btn-secondary {
+  background: #f3f4f6;
+  color: #6b7280;
+  border: 1.5px solid #e5e7eb;
+}
+
+#naukri-autofill-overlay .naf-btn-secondary:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+/* Hint text */
+#naukri-autofill-overlay .naf-hint {
+  font-size: 11px;
+  color: #9ca3af;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Error message */
+#naukri-autofill-overlay .naf-error {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 12px;
+  margin-top: 8px;
+  text-align: center;
+}

@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(unzip -q \"Naukri-AutoFill.zip\")",
+      "Bash(code .)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(python3)"
+    ]
+  }
+}

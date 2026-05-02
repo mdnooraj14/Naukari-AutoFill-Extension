@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Naukri AutoFill Assistant</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+  <!-- ── Header ──────────────────────────────────────────────── -->
+  <header class="header">
+    <div class="header-left">
+      <span class="header-icon">🤖</span>
+      <div>
+        <div class="header-title">Naukri AutoFill</div>
+        <div class="header-subtitle">Job Application Assistant</div>
+      </div>
+    </div>
+    <button id="btn-support" class="support-btn" title="Support the developer">❤️</button>
+
+    <div class="header-stats">
+      <span id="qna-count">0</span>
+      <span class="stat-label">saved</span>
+    </div>
+  </header>
+
+  <!-- ── Tab Navigation ──────────────────────────────────────── -->
+  <nav class="tabs">
+    <button class="tab active" data-tab="qna">📋 Q&amp;A Library</button>
+    <button class="tab" data-tab="add">➕ Add Custom</button>
+    <button class="tab" data-tab="settings">⚙️ Settings</button>
+  </nav>
+
+  <!-- ── Tab: Q&A Library ────────────────────────────────────── -->
+  <div id="tab-qna" class="tab-content active">
+
+    <div class="section-toolbar">
+      <input type="text" id="search-input" class="search-input" placeholder="🔍  Search questions...">
+      <div class="toolbar-actions">
+        <button class="btn btn-outline btn-sm" id="btn-export-json" title="Export all Q&A as JSON">
+          📤 Export JSON
+        </button>
+        <button class="btn btn-danger btn-sm" id="btn-clear-all" title="Delete all saved Q&A">
+          🗑️ Clear All
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter chips -->
+    <div class="filter-chips">
+      <button class="chip active" data-filter="all">All</button>
+      <button class="chip" data-filter="single">Single Choice</button>
+      <button class="chip" data-filter="multi">Multi Choice</button>
+      <button class="chip" data-filter="short">Short Answer</button>
+      <button class="chip" data-filter="long">Description</button>
+    </div>
+
+    <!-- Q&A list -->
+    <div id="qna-list" class="qna-list">
+      <div class="empty-state" id="empty-state">
+        <div class="empty-icon">📭</div>
+        <div class="empty-title">No questions saved yet</div>
+        <div class="empty-desc">Start applying to jobs on Naukri. When new questions appear, the extension will ask you to answer them — and save them here automatically.</div>
+      </div>
+    </div>
+
+    <!-- JSON Export Panel -->
+    <div id="json-panel" class="json-panel hidden">
+      <div class="json-panel-header">
+        <span>📄 Q&amp;A JSON Backup</span>
+        <div class="json-panel-actions">
+          <button class="btn btn-sm btn-primary" id="btn-copy-json">📋 Copy</button>
+          <button class="btn btn-sm btn-outline" id="btn-close-json">✕ Close</button>
+        </div>
+      </div>
+      <textarea id="json-output" class="json-output" readonly></textarea>
+      <div class="json-hint">💡 Copy this JSON and save it somewhere safe. You can import it later using the Settings tab.</div>
+    </div>
+  </div>
+
+  <!-- ── Tab: Add Custom Q&A ─────────────────────────────────── -->
+  <div id="tab-add" class="tab-content">
+    <div class="form-section">
+      <h3 class="form-title">Add a Custom Q&amp;A</h3>
+      <p class="form-desc">Manually add questions and answers that you want to be auto-filled.</p>
+
+      <div class="form-group">
+        <label class="form-label">Question Text *</label>
+        <input type="text" id="custom-question" class="form-input" placeholder="e.g. What is your expected CTC?">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Question Type *</label>
+        <select id="custom-type" class="form-select">
+          <option value="short">Short Answer (number / text)</option>
+          <option value="long">Description (paragraph)</option>
+          <option value="single">Single Choice (radio)</option>
+          <option value="multi">Multiple Choice (checkboxes)</option>
+        </select>
+      </div>
+
+      <!-- Dynamic answer input — changes based on type -->
+      <div class="form-group" id="answer-group">
+        <label class="form-label">Your Answer *</label>
+        <input type="text" id="custom-answer-short" class="form-input" placeholder="Type your answer...">
+        <textarea id="custom-answer-long" class="form-textarea hidden" placeholder="Type your description..." rows="4"></textarea>
+        <div id="custom-answer-options" class="hidden">
+          <div id="options-list" class="options-builder"></div>
+          <button class="btn btn-outline btn-sm mt-8" id="btn-add-option">+ Add Option</button>
+          <div class="form-hint" id="options-hint">Check the option(s) you want selected as your answer.</div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-full" id="btn-save-custom">💾 Save Q&amp;A</button>
+      <div id="save-feedback" class="save-feedback hidden"></div>
+    </div>
+  </div>
+
+  <!-- ── Tab: Settings ───────────────────────────────────────── -->
+  <div id="tab-settings" class="tab-content">
+
+    <div class="settings-section">
+      <h3 class="settings-title">Behaviour</h3>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-name">Auto Submit</div>
+          <div class="setting-desc">Automatically click "Save" after all questions are answered</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="setting-auto-submit" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-name">Show Fill Notifications</div>
+          <div class="setting-desc">Show a brief toast when answers are auto-filled</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="setting-notifications" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h3 class="settings-title">Data Management</h3>
+
+      <div class="import-section">
+        <label class="form-label">Import Q&amp;A from JSON Backup</label>
+        <textarea id="import-json" class="form-textarea" placeholder='Paste your exported JSON here...' rows="5"></textarea>
+        <div class="import-actions">
+          <button class="btn btn-primary btn-sm" id="btn-import-json">📥 Import &amp; Merge</button>
+          <button class="btn btn-danger btn-sm" id="btn-import-replace">🔄 Import &amp; Replace</button>
+        </div>
+        <div id="import-feedback" class="save-feedback hidden"></div>
+      </div>
+
+      <div class="danger-zone">
+        <div class="danger-title">⚠️ Danger Zone</div>
+        <button class="btn btn-danger btn-full" id="btn-delete-all-settings">🗑️ Delete All Saved Data</button>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h3 class="settings-title">About</h3>
+      <div class="about-info">
+        <div class="about-row"><span>Version</span><span>1.0.0</span></div>
+        <div class="about-row"><span>Works on</span><span>naukri.com</span></div>
+        <div class="about-row"><span>Storage</span><span>Local (browser only)</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Edit Modal ───────────────────────────────────────────── -->
+  <div id="edit-modal" class="modal-backdrop hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">✏️ Edit Answer</span>
+        <button class="modal-close" id="modal-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Question</label>
+          <div class="modal-question-text" id="modal-question-display"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Question Type</label>
+          <select id="modal-type" class="form-select">
+            <option value="short">Short Answer</option>
+            <option value="long">Description</option>
+            <option value="single">Single Choice</option>
+            <option value="multi">Multiple Choice</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Your Answer</label>
+          <input type="text" id="modal-answer-short" class="form-input" placeholder="Type your answer...">
+          <textarea id="modal-answer-long" class="form-textarea hidden" rows="4" placeholder="Type your description..."></textarea>
+          <div id="modal-answer-options" class="hidden">
+            <div id="modal-options-list" class="options-builder"></div>
+            <button class="btn btn-outline btn-sm mt-8" id="btn-modal-add-option">+ Add Option</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="modal-cancel">Cancel</button>
+        <button class="btn btn-primary" id="modal-save">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Confirm Modal ────────────────────────────────────────── -->
+  <div id="confirm-modal" class="modal-backdrop hidden">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <span class="modal-title" id="confirm-title">Confirm</span>
+      </div>
+      <div class="modal-body">
+        <p id="confirm-message" class="confirm-message"></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="confirm-cancel">Cancel</button>
+        <button class="btn btn-danger" id="confirm-ok">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Support Modal ───────────────────────────────────────────── -->
+  <div id="support-modal" class="modal-backdrop hidden">
+    <div class="modal support-modal-box">
+      <div class="modal-header">
+        <span class="modal-title">❤️ Support the Developer</span>
+        <button class="modal-close" id="support-modal-close">✕</button>
+      </div>
+      <div class="modal-body support-modal-body">
+        <p class="support-greeting">Hey! Glad this extension is saving you time.</p>
+        <p class="support-msg">
+          If it's been useful, could you send just <strong>₹1</strong> to let me know you're using it and that it's making a difference? Even that tiny bit of feedback means a lot. 🙏
+        </p>
+        <p class="support-msg">
+          Have a feature idea or ran into a bug? I'd love to hear from you —
+          <a href="mailto:aadilshaik.dtov@gmail.com" class="support-email">aadilshaik.dtov@gmail.com</a>
+        </p>
+        <p class="support-msg support-hire">
+          💼 <strong>Want to build something exciting?</strong> I'm available for freelance projects — feel free to reach out!
+        </p>
+        <div class="support-qr-wrap">
+          <img src="upi_qr.png" alt="UPI QR Code" class="support-qr">
+          <div class="support-upi-id">UPI: rockingintrovert-1@okhdfcbank</div>
+          <div class="support-qr-hint">Scan with any UPI app • GPay, PhonePe, Paytm</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Prompt Enhancer Preview",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8000", "--directory", "D:/Naukari-Bot/prompt-enhancer-extension"],
+      "port": 8000
+    }
+  ]
+}
