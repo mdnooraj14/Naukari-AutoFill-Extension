@@ -421,7 +421,7 @@ All logs prefixed with `[NAF]` (Naukri AutoFill)
 
 ## 📜 License & Credits
 
-Developed by **Mohammed Zakir Nooraj**
+Developed by **Mohammed Zakir Nooraj** | 
 Published by **Aadil Shaik** | Version 1.0.0
 
 ---
